@@ -47,18 +47,35 @@ private AppUserJPA appUserJPA;
 
 
 
+//
+//    @GetMapping("/userInfo")
+//    public String getUserInfo(Model model, HttpServletRequest request) {
+//        // the next line we use it because we have used spring security dependency, without it we will get null
+//        final String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+//        HttpSession httpSession = request.getSession();
+//
+//
+//        ApplicationUser userInDB = appUserJPA.findByUsername(currentUser);
+//        model.addAttribute("username", userInDB);
+//
+//        return "userInformation.html";
+//    }
 
     @GetMapping("/userInfo")
-    public String getUserInfo(Model model, HttpServletRequest request) {
-        // the next line we use it because we have used spring security dependency, without it we will get null
-        final String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        HttpSession httpSession = request.getSession();
+    public String getUserInfo(Model model, Principal p) {
+        if(p != null){
+            String username = p.getName();
+            ApplicationUser appUser= appUserJPA.findByUsername(username);
 
-
-        ApplicationUser userInDB = appUserJPA.findByUsername(currentUser);
-        model.addAttribute("username", userInDB);
+            model.addAttribute("username", username);
+            model.addAttribute("firstName", appUser.getFirstName());
+            model.addAttribute("lastName", appUser.getLastName());
+            model.addAttribute("dateOfBirth", appUser.getDateOfBirth());
+            model.addAttribute("bio", appUser.getBio());
+        }
 
         return "userInformation.html";
+
     }
 
 
