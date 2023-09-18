@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+<header>
+    <ul class="navbar">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li class="right"><a href="/login">Login</a></li>
+    </ul>
+</header>
+
+<div class="signup-container">
+    <h2>Signup for Code Fellow Ship Site</h2>
+    <form class="signup-form" action="/signup" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter a Username" required>
+        </div>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="your first name" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="your last name" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+        </div>
+        <div class="form-group">
+            <label for="dateOfBirth">Date Of Birth</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="your birth date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea type="date" id="bio" name="bio" placeholder="Write a bio" required></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit">Sign Up</button>
+        </div>
+    </form>
+</div>
+<footer>
+    <p>&copy; 2023 Code FellowShip Website. All rights reserved.</p>
+</footer>
+</body>
+</html>
