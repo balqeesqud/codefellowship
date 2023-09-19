@@ -1,7 +1,9 @@
 package com.example.CodeFellowship.controllers;
 
 import com.example.CodeFellowship.models.ApplicationUser;
+import com.example.CodeFellowship.models.Post;
 import com.example.CodeFellowship.repostories.AppUserJPA;
+import com.example.CodeFellowship.repostories.PostJPA;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +29,11 @@ import java.util.List;
 public class AppUserController {
 
     private AppUserJPA appUserJPA;
+    private PostJPA postJPA;
 
-    public AppUserController(AppUserJPA appUserJPA) {
+    public AppUserController(AppUserJPA appUserJPA, PostJPA postJPA) {
         this.appUserJPA = appUserJPA;
+        this.postJPA = postJPA;
     }
 
     @GetMapping("/myprofile")
@@ -45,6 +49,9 @@ public class AppUserController {
             model.addAttribute("dateOfBirth", appUser.getDateOfBirth());
             model.addAttribute("bio", appUser.getBio());
             model.addAttribute("codeFellowUserId", appUser.getId());
+
+            List<Post> userPosts = postJPA.findByUserId(appUser);
+            model.addAttribute("userPosts", userPosts);
 
         }
 

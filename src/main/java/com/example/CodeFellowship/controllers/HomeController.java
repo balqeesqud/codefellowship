@@ -79,6 +79,23 @@ public class HomeController {
         return "createposts.html";
 
     }
+
+//    @GetMapping("/editInfo")
+//    public String editInfo(Model model, Principal p){
+//        if (p != null) {
+//            String username = p.getName();
+//            ApplicationUser appUser = appUserJPA.findByUsername(username);
+//
+//            model.addAttribute("createdDate", appUser.getLocalDate());
+//            model.addAttribute("username", username);
+//            model.addAttribute("firstName", appUser.getFirstName());
+//            model.addAttribute("lastName", appUser.getLastName());
+//            model.addAttribute("dateOfBirth", appUser.getDateOfBirth());
+//            model.addAttribute("bio", appUser.getBio());
+//            model.addAttribute("codeFellowUserId", appUser.getId());
+//        }
+//            return "editInfo.html";
+//    }
 }
 
 

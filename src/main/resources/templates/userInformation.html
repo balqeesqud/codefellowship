@@ -35,6 +35,14 @@
   <p>Bio: <span th:text="${bio}"></span></p>
 
 
+  <h3><a th:href="${'/users/' + codeFellowUserId}">Edit Your Info</a></h3>
+
+
+  <h3 class="subtitle">Your Posts:</h3>
+  <ul>
+    <li th:each="post : ${userPosts}" class="post" th:text="${post.body}"></li>
+  </ul>
+
 
 
   <form th:action="${'/users/' + codeFellowUserId}" th:method="PUT">
