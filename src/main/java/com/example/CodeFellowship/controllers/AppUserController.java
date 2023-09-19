@@ -38,9 +38,13 @@ private AppUserJPA appUserJPA;
     public String getAboutPage(){
         return "about.html";
     }
+//    @GetMapping("/Securedabout")
+//    public String getAboutSecuredPage(){
+//        return "about.html";
+//    }
 
     // Secured Home Endpoint
-    @GetMapping("/")
+    @GetMapping("/securedHome")
     public String getHomePageAfterLogging(){
         return "indexAfterLogging.html";
     }
@@ -94,7 +98,7 @@ private AppUserJPA appUserJPA;
         }
         HttpSession httpSession= request.getSession();
         httpSession.setAttribute("username", username);
-        return new RedirectView("/");
+        return new RedirectView("/securedHome");
     }
 
 
