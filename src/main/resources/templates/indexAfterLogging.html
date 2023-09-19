@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
+<div th:replace="/fragments/nav-header :: h3"></div>
+<div th:replace="/fragments/nav-header :: index-header"></div>
 <header>
     <ul class="navbar">
         <li><a href="/securedHome">Home</a></li>
-        <li><a href="/about">About</a></li>
+        <li><a href="/securedAbout">About</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="/userInfo">Information</a></li>
+        <li><a href="/myprofile">My profile</a></li>
+        <li><a href="/myposts">My posts</a></li>
         <li class="right"><a href="/logout">Log out</a></li>
     </ul>
 </header>
