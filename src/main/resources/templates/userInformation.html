@@ -19,13 +19,15 @@
 
 <div class="container">
 
+<!--  this template used by ****Principal***** in controller-->
+
+
   <h1>User Information</h1>
-<!--  i used the getter because these attributes are private in models -->
-  <p>Username: <span th:text="${username.getUsername()}"></span></p>
-  <p>First Name: <span th:text="${username.getFirstName()}"></span></p>
-  <p>Last Name: <span th:text="${username.getLastName()}"></span></p>
-  <p>Date of Birth: <span th:text="${username.getDateOfBirth()}"></span></p>
-  <p>Bio: <span th:text="${username.getBio()}"></span></p>
+  <h3 th:if="${username != null}" th:text="${'Current user: ' + username }"></h3>
+  <p>First Name: <span th:text="${firstName}"></span></p>
+  <p>Last Name: <span th:text="${lastName}"></span></p>
+  <p>Date of Birth: <span th:text="${dateOfBirth}"></span></p>
+  <p>Bio: <span th:text="${bio}"></span></p>
 
 </div>
 
