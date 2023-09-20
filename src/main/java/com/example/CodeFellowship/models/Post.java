@@ -16,6 +16,7 @@ public class Post {
     private LocalDate createdAt;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private ApplicationUser userId;
 
     public Post() {

@@ -110,7 +110,7 @@ public class AppUserController {
 //            appUser.setProfilePic(profilePic);
 
 
-            // Formatting the LocalDate as a string before setting it
+            // Formatting tq    ahe LocalDate as a string before setting it
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = localDate.format(formatter);
             appUser.setLocalDate(LocalDate.parse(formattedDate, formatter));

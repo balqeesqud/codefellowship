@@ -74,6 +74,7 @@ public class HomeController {
                 List<Post> userPostsInDB = appUserInDB.getPosts();
                 model.addAttribute("username", username);
                 model.addAttribute("userPosts", userPostsInDB);
+                model.addAttribute("createdAt", LocalDate.now());
             }
         }
         return "createposts.html";

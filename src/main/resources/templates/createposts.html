@@ -27,7 +27,7 @@
 </form>
 <h3 class="subtitle">Your Posts:</h3>
 <ul>
-    <li th:each="post : ${userPosts}" class="post" th:text="${post.body }"></li>
+    <li th:each="post : ${userPosts}" class="post" th:text="${post.body + '      created at ' + createdAt }"></li>
 </ul>
 
 <footer>
