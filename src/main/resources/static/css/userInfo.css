@@ -45,7 +45,7 @@ form {
     margin-top: 20px;
 }
 
-/* Style the submit button */
+
 input[type="submit"] {
     background-color: #333;
     color: white;
@@ -58,6 +58,11 @@ input[type="submit"]:hover {
     background-color: #555;
 }
 
+ .profile-picture {
+            max-width: 150px; /* Set the maximum width for the image */
+            border: 2px solid #ccc; /* Add a border around the image */
+            border-radius: 50%; /* Make the image round (for a circular profile picture) */
+        }
 
 footer {
     background-color: #333;

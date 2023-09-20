@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Your posts</title>
+    <link rel="stylesheet" href="/css/about.css">
+
+</head>
+<header>
+    <ul class="navbar">
+        <li><a href="/securedHome">Home</a></li>
+        <li><a href="/securedAbout">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/myprofile">My profile</a></li>
+        <li><a href="/myposts">My posts</a></li>
+        <li class="right"><a href="/logout">Log out</a></li>
+    </ul>
+</header>
+
+<body>
+<div class="spacer"></div>
+<h3 th:if="${username != null}" th:text="${'Current user: ' + username }"></h3>
+<form action="/create-post" method="POST">
+    <label for="body">New Post:</label>
+    <input type="text" name="body" id="body">
+    <input type="submit" value="Add Post">
+</form>
+<h3 class="subtitle">Your Posts:</h3>
+<ul>
+    <li th:each="post : ${userPosts}" class="post" th:text="${post.body + '      created at ' + createdAt }"></li>
+</ul>
+
+<footer>
+    <p>&copy; 2023 Employee Website. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

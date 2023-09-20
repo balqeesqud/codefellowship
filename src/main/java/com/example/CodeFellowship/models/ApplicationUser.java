@@ -1,14 +1,15 @@
 package com.example.CodeFellowship.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -22,17 +23,43 @@ public class ApplicationUser implements UserDetails {
     private String lastName;
     private String dateOfBirth;
     private String bio;
+    private String profilePic;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate localDate;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    private List<Post> posts;
 
     public ApplicationUser() {
     }
 
-    public ApplicationUser(String username, String password, String firstName, String lastName, String dateOfBirth, String bio) {
+    public ApplicationUser(String username, String password, String firstName, String lastName, String dateOfBirth, String bio, String profilePic, LocalDate localDate) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
+        this.profilePic = profilePic;
+        this.localDate = localDate;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public Long getId() {
@@ -108,9 +135,17 @@ public class ApplicationUser implements UserDetails {
         return bio;
     }
 
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
     public void setBio(String bio) {
         this.bio = bio;
-    }
+            }
 
     @Override
     public String toString() {
@@ -122,6 +157,7 @@ public class ApplicationUser implements UserDetails {
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", bio='" + bio + '\'' +
+                ", profilePic='" + profilePic + '\'' +
                 '}';
     }
 }

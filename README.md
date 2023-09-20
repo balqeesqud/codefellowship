@@ -31,7 +31,38 @@ and engagement.
 
 7. **Accessibility:** CodeFellowship ensures that critical routes, such as the homepage, login, and registration, 
                    are accessible to both logged-in and non-logged-in users, making it easy for newcomers to join the 
-                   community.
+                   community. 
+8. **User Profile Management**
+
+- Added the ability for users to edit their profile information.
+- Enabled users to upload profile pictures.
+- Displayed user information on the profile page.
+- Ensured that only authenticated users can access certain pages.
+
+9. **Post Creation and Display**
+
+- Implemented the creation of posts by authenticated users.
+- Displayed user-specific posts on their profile page.
+- Included post creation date and time.
+- Ensured that posts are associated with the correct user.
+
+10. **Error Handling and Validation**
+
+- Created custom error pages for a better user experience.
+- Added form validation to ensure data integrity.
+- Handled various exceptions gracefully.
+
+11. **Thymeleaf Templates**
+
+- Utilized Thymeleaf templates for dynamic content rendering.
+- Created reusable fragments for consistent design.
+
+
+
+
+
+
+
 
    
 
