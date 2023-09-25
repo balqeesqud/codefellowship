@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="/css/userInfo.css">
@@ -14,6 +14,8 @@
     <li><a href="/contact">Contact</a></li>
     <li><a href="/myprofile">My profile</a></li>
     <li><a href="/myposts">My posts</a></li>
+    <li> <a  href="/getallusers">All Users</a></li>
+
 
     <li class="right"><a href="/logout">Log out</a></li>
   </ul>
@@ -28,39 +30,51 @@
     <div th:replace="/fragments/error-fragment :: fellow-error"></div>
     <h3 th:text="${'User id: ' + codeFellowUserId}"></h3>
 
+
+  <div th:if="${codeFellowUserId != null}">
   <img class="profile-picture" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAIUAhQMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABAIDBQEHBv/EACsQAQACAQMEAQIFBQAAAAAAAAABAgMRITEEEkFRYQVxIjNigaEUFTJCkf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A+4gAAAAAAAAAAAAAAAAAAAAAA15M1abcz6gGwRWzXt50hrmZnmQdDWPcPXNiYmdpif3ZRa0cWmAdAS4+omNrxr8qKXreNazqDIAAAAAAAAGvPk7KbczwDXnzaT2158z6TAoIs2Wclttqx49qc86YbIRCNp2V9Plm8dluY4lIzxTpkrPyC97S00nWHgC7FkjJXXz5hmgx37LRPjyuidY1jhFegAAAAAIuot3ZJ9Rstc6d5mfcgAKjX1Ea4bafdC6U7x8IcuKcduJ7fEg1s8Ua5KxHtgq6bFNZ77RpPgFAACvpba009JG7pJ/HMe4RVYAAAAAPJ4lz3Rc+8aXmPUg8JmIjWZ0gS9VeZtFInbyqKIyUmdIvEyyn5c1tpnvXzr9wVxSlZ1itYn7PZmIjWZ0j2l/qbeK1a75L3n8U6/ALK5KWnSLRMs3NX4b9+OJnnyDNu6X839mlR0kb2nxwiqQAAAAAEvU00tFo88qmN6xes1niQQfdz727rzb3K3q9cVLVnmdoQKgAAAAo6S29q+907LHbsyVt6B0FuCnZSInmd5aOnxd0908Rx8q0UAAAAAAABp6np6dRTtttMb1n1Lj5+nyYLaXjbxaOJd55asWiYtETE+JB+dHWy/TsV96TNJ+N4T2+m5Y/xtSf4BCLP7dn/R/1sx/TLT+ZkiI/TAOet6ToLZJi2aJrT15ldh6TDh0mtdbR/tO8qAeRERGkcQ9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//Z" alt="Default profile pic">
-  <p>First Name: <span th:text="${firstName}"></span></p>
-  <p>Last Name: <span th:text="${lastName}"></span></p>
-  <p>Date of Birth: <span th:text="${dateOfBirth}"></span></p>
-  <p>Bio: <span th:text="${bio}"></span></p>
+  <p>User Name: <span th:text="${codeFellowUsername}"></span></p>
+  <p>First Name: <span th:text="${codeFellowFirstName}"></span></p>
+  <p>Last Name: <span th:text="${codeFellowLastName}"></span></p>
+  <p>Date of Birth: <span th:text="${codeFellowDateOfBirth}"></span></p>
+  <p>Bio: <span th:text="${codeFellowBio}"></span></p>
+  </div>
 
+  <h3 class="subtitle"><span th:text="${codeFellowUsername}+ ' Posts'"></span></h3>
 
-  <h3><a th:href="${'/users/' + codeFellowUserId}">Edit Your Info</a></h3>
-
-
-  <h3 class="subtitle">Your Posts:</h3>
   <ul>
-    <li th:each="post : ${userPosts}" class="post" th:text="${post.body + '   created at  ' + createdDate}"></li>
+    <li th:each="post : ${userPosts}" class="post" th:text="${post.body + '   created at  ' + codeFellowCreatedDate}"></li>
   </ul>
 
+<!--  <form th:action="@{'/follow/' + codeFellowUserId}" method="POST" th:unless="${isFollowing}">-->
+<!--    <button type="submit">Follow</button>-->
+<!--  </form>-->
+
+  <div th:unless="${user == null or user.username == null or !user.username.equals(user.username)}">
+    <form th:action="@{/followUser/{userId}(userId=${user.id})}" method="post">
+      <button type="submit" th:text="${user.followedUsers.contains(loggedInUser) ? 'Unfollow' : 'Follow'}"></button>
+    </form>
+
+  <div th:if="${followSuccess}" class="success-message" th:text="'You are following ' + codeFellowUsername"></div>
 
 
-  <form th:action="${'/users/' + codeFellowUserId}" th:method="PUT">
-    <label for="username">Username</label>
-    <input id="username" th:value="${codeFellowUsername}" type="text" name="username" th:disabled="${!username.equals(codeFellowUsername)}">
-    <label for="createdDate">Created At</label>
-    <input id="createdDate" th:value="${codeFellowCreatedDate}" type="text" name="localDate" th:disabled="${!username.equals(codeFellowUsername)}">
-    <label for="firstName">First name</label>
-    <input id="firstName" th:value="${codeFellowFirstName}" type="text" name="firstName" th:disabled="${!username.equals(codeFellowUsername)}">
-    <label for="lastName">Last name</label>
-    <input id="lastName" th:value="${codeFellowLastName}" type="text" name="lastName" th:disabled="${!username.equals(codeFellowUsername)}">
-    <label for="dateOfBirth">Birth date</label>
-    <input id="dateOfBirth" th:value="${codeFellowDateOfBirth}" type="date" name="dateOfBirth" th:disabled="${!username.equals(codeFellowUsername)}">
-    <label for="bio">Bio</label>
-    <input id="bio" th:value="${codeFellowBio}" type="text" name="bio" th:disabled="${!username.equals(codeFellowUsername)}">
-    <input th:if="${username.equals(codeFellowUsername)}" type="submit" value="Edit User Info">
-  </form>
-</div>
+
+<!--  <form th:action="${'/users/' + codeFellowUserId}" th:method="PUT">-->
+<!--    <label for="username">Username</label>-->
+<!--    <input id="username" th:value="${codeFellowUsername}" type="text" name="username" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <label for="createdDate">Created At</label>-->
+<!--    <input id="createdDate" th:value="${codeFellowCreatedDate}" type="text" name="localDate" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <label for="firstName">First name</label>-->
+<!--    <input id="firstName" th:value="${codeFellowFirstName}" type="text" name="firstName" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <label for="lastName">Last name</label>-->
+<!--    <input id="lastName" th:value="${codeFellowLastName}" type="text" name="lastName" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <label for="dateOfBirth">Birth date</label>-->
+<!--    <input id="dateOfBirth" th:value="${codeFellowDateOfBirth}" type="date" name="dateOfBirth" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <label for="bio">Bio</label>-->
+<!--    <input id="bio" th:value="${codeFellowBio}" type="text" name="bio" th:disabled="${!username.equals(codeFellowUsername)}">-->
+<!--    <input th:if="${username.equals(codeFellowUsername)}" type="submit" value="Edit User Info">-->
+<!--  </form>-->
+<!--</div>-->
 
   <form action="/logout" method="POST">
     <input type="submit" value="Log Out">

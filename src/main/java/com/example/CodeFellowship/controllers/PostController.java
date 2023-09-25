@@ -5,6 +5,7 @@ import com.example.CodeFellowship.models.Post;
 import com.example.CodeFellowship.repostories.AppUserJPA;
 import com.example.CodeFellowship.repostories.PostJPA;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -43,6 +44,7 @@ public class PostController {
 
         return new RedirectView("/myposts");
     }
+
 
 
 }

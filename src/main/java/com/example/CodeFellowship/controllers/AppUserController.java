@@ -20,10 +20,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class AppUserController {
@@ -55,19 +52,27 @@ public class AppUserController {
 
         }
 
-        return "userInformation.html";
+        return "myprofile.html";
 
     }
 
+
     @GetMapping("/users/{id}")
-    public String getUserInfo(Model model, Principal p, @PathVariable Long id) {
-        {
-            if (p != null)
-            {
+    public String getUserInfo(Model model, Principal p, @PathVariable Long id)
+    {
+
+//            boolean isFollowing = false;
+            if (p != null) {
                 String username = p.getName();
                 ApplicationUser appBrowsingUser = appUserJPA.findByUsername(username);
+//                ApplicationUser userToFollow = appUserJPA.findByFollowingId(id);
+//                if (userToFollow!= null) {
+//                    isFollowing = appBrowsingUser.getFollowing().stream()
+//                            .anyMatch(user -> user.getUsername().equals(userToFollow.getUsername()));
+//                }
 
-
+//                model.addAttribute("isFollowing", isFollowing);
+//                model.addAttribute("userId", appBrowsingUser.getId());
                 model.addAttribute("username", username);
                 model.addAttribute("createdDate", appBrowsingUser.getLocalDate());
                 model.addAttribute("firstName", appBrowsingUser.getFirstName());
@@ -75,55 +80,60 @@ public class AppUserController {
                 model.addAttribute("dateOfBirth", appBrowsingUser.getDateOfBirth());
                 model.addAttribute("bio", appBrowsingUser.getBio());
                 model.addAttribute("profilePic", appBrowsingUser.getProfilePic());
+
+
+
             }
 
-            ApplicationUser codeFellowUser = appUserJPA.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
+                ApplicationUser codeFellowUser = appUserJPA.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
 
-            model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
-            model.addAttribute("codeFellowUsername", codeFellowUser.getUsername());
-            model.addAttribute("codeFellowFirstName", codeFellowUser.getFirstName());
-            model.addAttribute("codeFellowLastName", codeFellowUser.getLastName());
-            model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
-            model.addAttribute("codeFellowBio", codeFellowUser.getBio());
-            model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
-            model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+                model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+                model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
+                model.addAttribute("codeFellowUsername", codeFellowUser.getUsername());
+                model.addAttribute("codeFellowFirstName", codeFellowUser.getFirstName());
+                model.addAttribute("codeFellowLastName", codeFellowUser.getLastName());
+                model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
+                model.addAttribute("codeFellowBio", codeFellowUser.getBio());
+                model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
+                model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+                List<Post> userPosts = postJPA.findByUserId(codeFellowUser);
+                model.addAttribute("userPosts", userPosts);
 
-        }
 
         return "userInformation.html";
     }
 
-    @PutMapping("/users/{id}")  // @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public RedirectView editUserInfo(Model m, Principal p, @PathVariable Long id, String username, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")  LocalDate localDate, RedirectAttributes redir, String firstName, String lastName, String dateOfBirth, String bio, String profilePic)
-    {
-        if ((p != null) && (p.getName().equals(username)))
-        {
-            ApplicationUser appUser = appUserJPA.findById(id).orElseThrow();
-
-            appUser.setBio(bio);
-            appUser.setFirstName(firstName);
-            appUser.setLastName(lastName);
-            appUser.setDateOfBirth(dateOfBirth);
-            appUser.setUsername(username);
-
-//            appUser.setProfilePic(profilePic);
-
-
-            // Formatting tq    ahe LocalDate as a string before setting it
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = localDate.format(formatter);
-            appUser.setLocalDate(LocalDate.parse(formattedDate, formatter));
-
-            appUserJPA.save(appUser);
-        }
-        else
-        {
-            redir.addFlashAttribute("errorMessage", "Cannot edit another user's Info!");
-        }
-
-        return new RedirectView("/users/" + id);
-    }
+//    @PutMapping("/users/{id}")  // @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    public RedirectView editUserInfo(Model m, Principal p, @PathVariable Long id, String username, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")  LocalDate localDate, RedirectAttributes redir, String firstName, String lastName, String dateOfBirth, String bio, String profilePic)
+//    {
+//        if ((p != null) && (p.getName().equals(username)))
+//        {
+//            ApplicationUser appUser = appUserJPA.findById(id).orElseThrow();
+//
+//            appUser.setBio(bio);
+//            appUser.setFirstName(firstName);
+//            appUser.setLastName(lastName);
+//            appUser.setDateOfBirth(dateOfBirth);
+//            appUser.setUsername(username);
+//
+////            appUser.setProfilePic(profilePic);
+//
+//
+//            // Formatting tq    ahe LocalDate as a string before setting it
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            String formattedDate = localDate.format(formatter);
+//            appUser.setLocalDate(LocalDate.parse(formattedDate, formatter));
+//
+//            appUserJPA.save(appUser);
+//        }
+//        else
+//        {
+//            redir.addFlashAttribute("errorMessage", "Cannot edit another user's Info!");
+//        }
+//
+//        return new RedirectView("/users/" + id);
+//    }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public static class ResourceNotFoundException extends RuntimeException {
