@@ -57,22 +57,59 @@ public class AppUserController {
     }
 
 
-    @GetMapping("/users/{id}")
-    public String getUserInfo(Model model, Principal p, @PathVariable Long id)
-    {
+//    @GetMapping("/users/{id}")
+//    public String getUserInfo(Model model, Principal p, @PathVariable Long id)
+//    {
+//
+////            boolean isFollowing = false;
+//        if (p != null) {
+//            String username = p.getName();
+//            ApplicationUser appBrowsingUser = appUserJPA.findByUsername(username);
+////                ApplicationUser userToFollow = appUserJPA.findByFollowingId(id);
+////                if (userToFollow!= null) {
+////                    isFollowing = appBrowsingUser.getFollowing().stream()
+////                            .anyMatch(user -> user.getUsername().equals(userToFollow.getUsername()));
+////                }
+//
+////                model.addAttribute("isFollowing", isFollowing);
+////                model.addAttribute("userId", appBrowsingUser.getId());
+//            model.addAttribute("username", username);
+//            model.addAttribute("createdDate", appBrowsingUser.getLocalDate());
+//            model.addAttribute("firstName", appBrowsingUser.getFirstName());
+//            model.addAttribute("lastName", appBrowsingUser.getLastName());
+//            model.addAttribute("dateOfBirth", appBrowsingUser.getDateOfBirth());
+//            model.addAttribute("bio", appBrowsingUser.getBio());
+//            model.addAttribute("profilePic", appBrowsingUser.getProfilePic());
+//
+//
+//
+//        }
+//
+//        ApplicationUser codeFellowUser = appUserJPA.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
+//
+//        model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+//        model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
+//        model.addAttribute("codeFellowUsername", codeFellowUser.getUsername());
+//        model.addAttribute("codeFellowFirstName", codeFellowUser.getFirstName());
+//        model.addAttribute("codeFellowLastName", codeFellowUser.getLastName());
+//        model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
+//        model.addAttribute("codeFellowBio", codeFellowUser.getBio());
+//        model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
+//        model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+//        List<Post> userPosts = postJPA.findByApplicationUser(codeFellowUser);
+//        model.addAttribute("userPosts", userPosts);
+//
+//
+//        return "userInformation.html";
+//    }
 
-//            boolean isFollowing = false;
+    @GetMapping("/users/{id}")
+    public String getUserInfo(Model model, Principal p, @PathVariable Long id) {
+
         if (p != null) {
             String username = p.getName();
             ApplicationUser appBrowsingUser = appUserJPA.findByUsername(username);
-//                ApplicationUser userToFollow = appUserJPA.findByFollowingId(id);
-//                if (userToFollow!= null) {
-//                    isFollowing = appBrowsingUser.getFollowing().stream()
-//                            .anyMatch(user -> user.getUsername().equals(userToFollow.getUsername()));
-//                }
-
-//                model.addAttribute("isFollowing", isFollowing);
-//                model.addAttribute("userId", appBrowsingUser.getId());
             model.addAttribute("username", username);
             model.addAttribute("createdDate", appBrowsingUser.getLocalDate());
             model.addAttribute("firstName", appBrowsingUser.getFirstName());
@@ -81,12 +118,16 @@ public class AppUserController {
             model.addAttribute("bio", appBrowsingUser.getBio());
             model.addAttribute("profilePic", appBrowsingUser.getProfilePic());
 
+            ApplicationUser codeFellowUser = appUserJPA.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 
-
+            // Check if the current user is following the target user
+            boolean isFollowing = appBrowsingUser.getFollowing().contains(codeFellowUser);
+            model.addAttribute("isFollowing", isFollowing);
         }
 
         ApplicationUser codeFellowUser = appUserJPA.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 
         model.addAttribute("codeFellowUserId", codeFellowUser.getId());
         model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
@@ -96,13 +137,16 @@ public class AppUserController {
         model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
         model.addAttribute("codeFellowBio", codeFellowUser.getBio());
         model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
-        model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+
         List<Post> userPosts = postJPA.findByApplicationUser(codeFellowUser);
         model.addAttribute("userPosts", userPosts);
 
-
         return "userInformation.html";
     }
+
+
+
+
 
 //    @PutMapping("/users/{id}")  // @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    public RedirectView editUserInfo(Model m, Principal p, @PathVariable Long id, String username, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")  LocalDate localDate, RedirectAttributes redir, String firstName, String lastName, String dateOfBirth, String bio, String profilePic)
@@ -138,11 +182,9 @@ public class AppUserController {
     @GetMapping("/allusers")
     public String getAllUsers(Principal p, Model m) {
         if (p != null) {
-//            String username = p.getName();
-//            ApplicationUser user = applicationUserRepo.findByUsername(username);
-//            m.addAttribute("user", user);
             List<ApplicationUser> applicationUser=appUserJPA.findAll();
             m.addAttribute("users", applicationUser);
+
         }
         return "allusers.html";
     }
