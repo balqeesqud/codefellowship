@@ -28,7 +28,7 @@ public class ApplicationUser implements UserDetails {
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_followers",
             joinColumns = @JoinColumn(name = "user_id"),
