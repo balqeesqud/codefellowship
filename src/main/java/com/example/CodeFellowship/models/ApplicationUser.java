@@ -5,11 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.sql.RowSet;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -27,9 +25,19 @@ public class ApplicationUser implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate localDate;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_followers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private Set<ApplicationUser> followers;
+
+    @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
+    private Set<ApplicationUser> following;
     public ApplicationUser() {
     }
 
@@ -66,9 +74,29 @@ public class ApplicationUser implements UserDetails {
         return id;
     }
 
-      public String getUsername() {
+    public String getUsername() {
         return username;
     }
+
+    public Set<ApplicationUser> getFollowing() {
+        return following;
+    }
+
+    public Set<ApplicationUser> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<ApplicationUser> followers) {
+        this.followers = followers;
+    }
+
+//    public Set<ApplicationUser> getFollowing() {
+//        return following;
+//    }
+//
+//    public void setFollowing(Set<ApplicationUser> following) {
+//        this.following = following;
+//    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -145,7 +173,7 @@ public class ApplicationUser implements UserDetails {
 
     public void setBio(String bio) {
         this.bio = bio;
-            }
+    }
 
     @Override
     public String toString() {
@@ -160,4 +188,6 @@ public class ApplicationUser implements UserDetails {
                 ", profilePic='" + profilePic + '\'' +
                 '}';
     }
+
+
 }

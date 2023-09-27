@@ -8,11 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Controller
 public class PostController {
@@ -34,7 +31,7 @@ public class PostController {
 
             if (appUser != null) {
                 Post post = new Post(body, appUser, LocalDate.now()); // Use LocalDate.now() for createdAt
-                post.setUserId(appUser);
+                post.setApplicationUser(appUser);
                 post.setCreatedAt(LocalDate.now());
 
                 postJPA.save(post);
@@ -43,6 +40,7 @@ public class PostController {
 
         return new RedirectView("/myposts");
     }
+
 
 
 }

@@ -7,6 +7,9 @@ It provides a platform for users to connect with fellow coders, share their codi
 another. The application is built using Spring Boot and incorporates various features to facilitate user interaction 
 and engagement.
 
+In this lab we continued working on enhancing our website where users can now follow each other, have a feed page 
+that will display all the posts for the followed users and a Discover users where users can discover other users on 
+the service. In addition to using ManyToMany relationship and join tables to let the users follow each other.
 
 ## Key Features
 
@@ -56,6 +59,9 @@ and engagement.
 
 - Utilized Thymeleaf templates for dynamic content rendering.
 - Created reusable fragments for consistent design.
+
+
+12. ManyToMany relationship and join tables to let the users follow each other.
 
 
 
