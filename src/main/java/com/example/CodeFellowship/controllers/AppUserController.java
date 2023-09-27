@@ -47,7 +47,7 @@ public class AppUserController {
             model.addAttribute("bio", appUser.getBio());
             model.addAttribute("codeFellowUserId", appUser.getId());
 
-            List<Post> userPosts = postJPA.findByUserId(appUser);
+            List<Post> userPosts = postJPA.findByApplicationUser(appUser);
             model.addAttribute("userPosts", userPosts);
 
         }
@@ -62,9 +62,9 @@ public class AppUserController {
     {
 
 //            boolean isFollowing = false;
-            if (p != null) {
-                String username = p.getName();
-                ApplicationUser appBrowsingUser = appUserJPA.findByUsername(username);
+        if (p != null) {
+            String username = p.getName();
+            ApplicationUser appBrowsingUser = appUserJPA.findByUsername(username);
 //                ApplicationUser userToFollow = appUserJPA.findByFollowingId(id);
 //                if (userToFollow!= null) {
 //                    isFollowing = appBrowsingUser.getFollowing().stream()
@@ -73,32 +73,32 @@ public class AppUserController {
 
 //                model.addAttribute("isFollowing", isFollowing);
 //                model.addAttribute("userId", appBrowsingUser.getId());
-                model.addAttribute("username", username);
-                model.addAttribute("createdDate", appBrowsingUser.getLocalDate());
-                model.addAttribute("firstName", appBrowsingUser.getFirstName());
-                model.addAttribute("lastName", appBrowsingUser.getLastName());
-                model.addAttribute("dateOfBirth", appBrowsingUser.getDateOfBirth());
-                model.addAttribute("bio", appBrowsingUser.getBio());
-                model.addAttribute("profilePic", appBrowsingUser.getProfilePic());
+            model.addAttribute("username", username);
+            model.addAttribute("createdDate", appBrowsingUser.getLocalDate());
+            model.addAttribute("firstName", appBrowsingUser.getFirstName());
+            model.addAttribute("lastName", appBrowsingUser.getLastName());
+            model.addAttribute("dateOfBirth", appBrowsingUser.getDateOfBirth());
+            model.addAttribute("bio", appBrowsingUser.getBio());
+            model.addAttribute("profilePic", appBrowsingUser.getProfilePic());
 
 
 
-            }
+        }
 
-                ApplicationUser codeFellowUser = appUserJPA.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
+        ApplicationUser codeFellowUser = appUserJPA.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found with id " + id));
 
-                model.addAttribute("codeFellowUserId", codeFellowUser.getId());
-                model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
-                model.addAttribute("codeFellowUsername", codeFellowUser.getUsername());
-                model.addAttribute("codeFellowFirstName", codeFellowUser.getFirstName());
-                model.addAttribute("codeFellowLastName", codeFellowUser.getLastName());
-                model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
-                model.addAttribute("codeFellowBio", codeFellowUser.getBio());
-                model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
-                model.addAttribute("codeFellowUserId", codeFellowUser.getId());
-                List<Post> userPosts = postJPA.findByUserId(codeFellowUser);
-                model.addAttribute("userPosts", userPosts);
+        model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+        model.addAttribute("codeFellowCreatedDate", LocalDateTime.now());
+        model.addAttribute("codeFellowUsername", codeFellowUser.getUsername());
+        model.addAttribute("codeFellowFirstName", codeFellowUser.getFirstName());
+        model.addAttribute("codeFellowLastName", codeFellowUser.getLastName());
+        model.addAttribute("codeFellowDateOfBirth", codeFellowUser.getDateOfBirth());
+        model.addAttribute("codeFellowBio", codeFellowUser.getBio());
+        model.addAttribute("codeFellowProfilePic", codeFellowUser.getProfilePic());
+        model.addAttribute("codeFellowUserId", codeFellowUser.getId());
+        List<Post> userPosts = postJPA.findByApplicationUser(codeFellowUser);
+        model.addAttribute("userPosts", userPosts);
 
 
         return "userInformation.html";
@@ -135,6 +135,18 @@ public class AppUserController {
 //        return new RedirectView("/users/" + id);
 //    }
 
+    @GetMapping("/allusers")
+    public String getAllUsers(Principal p, Model m) {
+        if (p != null) {
+//            String username = p.getName();
+//            ApplicationUser user = applicationUserRepo.findByUsername(username);
+//            m.addAttribute("user", user);
+            List<ApplicationUser> applicationUser=appUserJPA.findAll();
+            m.addAttribute("users", applicationUser);
+        }
+        return "allusers.html";
+    }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public static class ResourceNotFoundException extends RuntimeException {
         ResourceNotFoundException(String message) {
@@ -142,4 +154,3 @@ public class AppUserController {
         }
     }
 }
-

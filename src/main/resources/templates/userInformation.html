@@ -11,10 +11,11 @@
   <ul class="navbar">
     <li><a href="/securedHome">Home</a></li>
     <li><a href="/securedAbout">About</a></li>
-    <li><a href="/contact">Contact</a></li>
     <li><a href="/myprofile">My profile</a></li>
     <li><a href="/myposts">My posts</a></li>
-    <li> <a  href="/getallusers">All Users</a></li>
+    <li> <a  href="/allusers">All Users</a></li>
+    <li> <a  href="/feed">Feed</a></li>
+
 
 
     <li class="right"><a href="/logout">Log out</a></li>
@@ -46,16 +47,40 @@
     <li th:each="post : ${userPosts}" class="post" th:text="${post.body + '   created at  ' + codeFellowCreatedDate}"></li>
   </ul>
 
+  <h3 th:if="${username != null}">
+
+    <form th:action="@{'/follow/' +${id}}" method="post">
+      <input type="submit" value="Follow">
+    </form>
 <!--  <form th:action="@{'/follow/' + codeFellowUserId}" method="POST" th:unless="${isFollowing}">-->
 <!--    <button type="submit">Follow</button>-->
 <!--  </form>-->
 
-  <div th:unless="${user == null or user.username == null or !user.username.equals(user.username)}">
-    <form th:action="@{/followUser/{userId}(userId=${user.id})}" method="post">
-      <button type="submit" th:text="${user.followedUsers.contains(loggedInUser) ? 'Unfollow' : 'Follow'}"></button>
-    </form>
+<!--  <div th:unless="${user == null or user.username == null or !user.username.equals(user.username)}">-->
+<!--    <form th:action="@{/followUser/{userId}(userId=${user.id})}" method="post">-->
+<!--      <button type="submit" th:text="${user.followedUsers.contains(loggedInUser) ? 'Unfollow' : 'Follow'}"></button>-->
+<!--    </form>-->
 
-  <div th:if="${followSuccess}" class="success-message" th:text="'You are following ' + codeFellowUsername"></div>
+<!--  <div th:if="${user != null and user != viewedUser}">-->
+<!--    <form th:action="@{/followUser/{userId}(userId=${viewedUser.id})}" method="post">-->
+<!--      <button type="submit" th:text="${user.following.contains(viewedUser) ? 'Unfollow' : 'Follow'}"></button>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--  <form th:action="@{'/follow/' + ${codeFellowUserId}}" method="POST" th:unless="${isFollowing}">-->
+<!--    <button type="submit">Follow</button>-->
+<!--  </form>-->
+
+<!--  <div th:unless="${user == null or user.username == null or !user.username.equals(username)}">-->
+<!--    <form th:action="@{/follow/{userId}(userId=${codeFellowUserId})}" method="post">-->
+<!--    <button type="submit"-->
+<!--            th:text="${user.followedUsers.contains(loggedInUser) ? 'Unfollow' : 'Follow'}"></button>-->
+<!--  </form>-->
+<!--</div>-->
+
+<!-- Display a success message if the user follows successfully -->
+<div th:if="${followSuccess}" class="success-message"
+     th:text="'You are following ' + codeFellowUsername"></div>
+
 
 
 

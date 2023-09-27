@@ -22,21 +22,13 @@
         <li class="right"><a href="/logout">Log out</a></li>
     </ul>
 </header>
-<section id="home">
-    <h2>Welcome to our Code Fellow Ship website. We are dedicated to providing information about our organization and team.</h2>
-    <img src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="pic">
-</section>
+<h3>Posts From followed users : </h3>
 
-
-<form action="/logout" method="POST">
-    <input type="submit" value="Log Out">
-</form>
-
-
-<footer>
-    <p>&copy; 2023 Code FellowShip Website. All rights reserved.</p>
-</footer>
-
-
+<ul th:each="post : ${posts}">
+    <li>
+        <a th:href="@{'/users/' + ${post.applicationUser.id}}" th:text="${'User : ' + post.applicationUser.username}"></a>
+        <p th:text="${post.body}"></p>
+    </li>
+</ul>
 </body>
 </html>

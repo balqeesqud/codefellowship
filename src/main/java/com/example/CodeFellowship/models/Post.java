@@ -4,7 +4,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class Post {
@@ -16,15 +15,15 @@ public class Post {
     private LocalDate createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private ApplicationUser userId;
+    @JoinColumn(name = "user_id") // This assumes "user_id" is the foreign key column name
+    private ApplicationUser applicationUser;
 
     public Post() {
     }
 
-    public Post(String body, ApplicationUser userId,  LocalDate createdAt) {
+    public Post(String body, ApplicationUser applicationUser,  LocalDate createdAt) {
         this.body = body;
-        this.userId = userId;
+        this.applicationUser = applicationUser;
         this.createdAt = createdAt;
 
     }
@@ -42,12 +41,12 @@ public class Post {
     }
 
 
-    public ApplicationUser getUserId() {
-        return userId;
+    public ApplicationUser getApplicationUser() {
+        return applicationUser;
     }
 
-    public void setUserId(ApplicationUser userId) {
-        this.userId = userId;
+    public void setApplicationUser(ApplicationUser applicationUser) {
+        this.applicationUser = applicationUser;
     }
 
     public Long getId() {
@@ -64,7 +63,7 @@ public class Post {
                 "id=" + id +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
-                ", userId=" + userId +
+                ", userId=" + applicationUser +
                 '}';
     }
 

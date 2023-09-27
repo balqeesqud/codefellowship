@@ -1,8 +1,11 @@
 package com.example.CodeFellowship.controllers;
 
 import com.example.CodeFellowship.models.ApplicationUser;
+import com.example.CodeFellowship.models.Post;
 import com.example.CodeFellowship.repostories.AppUserJPA;
 import com.example.CodeFellowship.repostories.PostJPA;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,11 +14,14 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
+@Controller
 public class FollowingController {
+
+    @Autowired
     private AppUserJPA appUserJPA;
+    @Autowired
     private PostJPA postJPA;
 
 //    @PostMapping("/follow/{userId}")
@@ -90,38 +96,33 @@ public class FollowingController {
 //    }
 
 
-    @PostMapping("/followUser/{userId}")
-    public RedirectView followUser(Principal p, @PathVariable Long userId) {
-        if (p != null) {
-            String username = p.getName();
-            ApplicationUser loggedInUser = appUserJPA.findByUsername(username);
-            ApplicationUser userToFollow = appUserJPA.findById(userId).orElse(null);
-
-            if (userToFollow != null) {
-                loggedInUser.getFollowers().add(userToFollow);
-                appUserJPA.save(loggedInUser);
+    @PostMapping("/follow/{id}")
+    public RedirectView followUser(@PathVariable Long id, Principal principal){
+        if(principal != null){
+            ApplicationUser currentApplicationUser = appUserJPA.findByUsername(principal.getName());
+            ApplicationUser wantFollowApplicationUser = appUserJPA.findById(id).orElseThrow();
+            if(currentApplicationUser != null && wantFollowApplicationUser != null){
+                wantFollowApplicationUser.getFollowers().add(currentApplicationUser);
+                appUserJPA.save(wantFollowApplicationUser);
             }
         }
-        return new RedirectView("/users/" + userId);
+        // Redirect to the user's profile page after the follow operation
+        return new RedirectView("/users/" + id);
     }
 
 
 
-
-
-
-
-
-
-    @GetMapping("/getallusers")
-    public String findUsers(Principal p, Model m) {
-        if (p != null) {
-            String username = p.getName();
-            ApplicationUser appUser = appUserJPA.findByUsername(username);
-            m.addAttribute("user", appUser);
+    @GetMapping("/feed")
+    public String getAllFeed(Principal p , Model m){
+        if (p != null)
+        {
+            ApplicationUser myUser = appUserJPA.findByUsername(p.getName());
+            Set<ApplicationUser> followed = myUser.getFollowing();
+            followed.remove(myUser);
+            List<Post> posts = postJPA.findAllByApplicationUserIn(followed);
+            m.addAttribute("posts", posts);
         }
-        List<ApplicationUser> allUsers = appUserJPA.findAll();
-        m.addAttribute("users", allUsers);
-        return "allusers.html";
+
+        return "feed";
     }
 }

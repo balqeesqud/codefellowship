@@ -25,7 +25,7 @@ public class ApplicationUser implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate localDate;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     @ManyToMany
@@ -36,8 +36,8 @@ public class ApplicationUser implements UserDetails {
     )
     private Set<ApplicationUser> followers;
 
-//    @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
-//    private Set<ApplicationUser> following;
+    @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
+    private Set<ApplicationUser> following;
     public ApplicationUser() {
     }
 
@@ -76,6 +76,10 @@ public class ApplicationUser implements UserDetails {
 
     public String getUsername() {
         return username;
+    }
+
+    public Set<ApplicationUser> getFollowing() {
+        return following;
     }
 
     public Set<ApplicationUser> getFollowers() {
@@ -169,7 +173,7 @@ public class ApplicationUser implements UserDetails {
 
     public void setBio(String bio) {
         this.bio = bio;
-            }
+    }
 
     @Override
     public String toString() {
